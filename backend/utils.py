@@ -10,3 +10,9 @@ def calculate_similarity(resume_text, jd_text):
     similarity = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])
     
     return round(float(similarity[0][0]) * 100, 2)
+
+def extract_keywords(text):
+
+    words = text.lower().split()
+    cleaned = [word.strip(",.()") for word in words]
+    return set(cleaned)
