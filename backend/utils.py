@@ -1,3 +1,14 @@
+SYNONYMS = {
+    "convolutional neural network": "cnn",
+    "convolutional neural networks": "cnn",
+    "scikit-learn": "scikit-learn",
+    "sklearn": "scikit-learn",
+    "natural language processing": "nlp",
+    "tfidf" : "tf-idf",
+    "support vector machine": "svm",
+    "support vector machines": "svm"
+}
+
 SKILLS = {
     "python": 2,
     "machine learning": 3,
@@ -41,7 +52,7 @@ def extract_keywords(text):
     return set(cleaned)
 
 def extract_skills(text):
-    text = text.lower()
+    text = normalize_text(text)
     found_skills = {}
 
     for skill, weight  in SKILLS.items():
@@ -50,3 +61,14 @@ def extract_skills(text):
 
 
     return found_skills
+
+def normalize_text(text):
+    text = text.lower()
+
+    for phrase, replacement in SYNONYMS.items():
+        if phrase in text:
+            text = text.replace(phrase, replacement)
+
+
+    return text
+
