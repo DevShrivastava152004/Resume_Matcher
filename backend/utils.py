@@ -1,3 +1,5 @@
+import re
+
 SYNONYMS = {
     "convolutional neural network": "cnn",
     "convolutional neural networks": "cnn",
@@ -55,12 +57,13 @@ def extract_skills(text):
     text = normalize_text(text)
     found_skills = {}
 
-    for skill, weight  in SKILLS.items():
-        if skill in text:
+    for skill, weight in SKILLS.items():
+        pattern = r"\b" + re.escape(skill) + r"\b"
+        if re.search(pattern, text):
             found_skills[skill] = weight
 
-
     return found_skills
+
 
 def normalize_text(text):
     text = text.lower()
