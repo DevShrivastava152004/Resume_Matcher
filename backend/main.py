@@ -1,8 +1,17 @@
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, UploadFile, File, Form
 from utils import calculate_similarity, extract_skills
 import PyPDF2
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def extract_text_from_pdf(file):
     text = ""
