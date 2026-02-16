@@ -82,3 +82,16 @@ MVP Complete – End-to-end functional AI resume matching web application.
 
 ## 📂 Project Structure
 
+resume-matcher/
+│
+├── backend/
+│ ├── main.py
+│ ├── utils.py
+│
+├── frontend/
+│ ├── index.html
+│ ├── style.css
+│ ├── script.js
+│
+└── README.md
+
