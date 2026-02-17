@@ -16,7 +16,7 @@ async function submitForm() {
     formData.append("job_description", jdElement.value);
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/match", {
+        const response = await fetch("https://resume-matcher-2-nq7d.onrender.com/match", {
         method: "POST",
         body: formData
     });
