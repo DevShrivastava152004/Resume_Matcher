@@ -6,6 +6,13 @@ This system combines semantic similarity (TF-IDF) with weighted skill-based matc
 
 ---
 
+## Live Demo
+
+Frontend: https://yourresumematchersite.netlify.app/
+
+Backend API Docs:  
+https://resume-matcher-2-nq7d.onrender.com/docs
+
 ## 🚀 Features
 
 - Resume PDF text extraction
