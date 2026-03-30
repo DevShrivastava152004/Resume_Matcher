@@ -1,5 +1,5 @@
 import re
-from sklearn.feature_extraction.text import TfidfVectorizer
+import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
 
@@ -17,80 +17,175 @@ SYNONYMS = {
     "support vector machine": "svm",
     "support vector machines": "svm"
 }
+SYNONYMS.update({
+    "convolutional neural networks": "cnn",
+    "convolutional neural network": "cnn",
+    "anti-spoofing": "anti spoofing",
+    "liveliness detection": "liveness detection",
+    "image processing": "computer vision"
+})
 
 # 🎯 Skill weights
 SKILLS = {
+    # Programming
     "python": 2,
+    "java": 2,
+    "c++": 2,
+
+    # Core ML/DL
     "machine learning": 3,
     "deep learning": 3,
     "tensorflow": 3,
     "pytorch": 3,
-    "cnn": 3,
-    "opencv": 2,
-    "nlp": 2,
-    "tf-idf": 2,
     "scikit-learn": 2,
     "xgboost": 2,
     "svm": 2,
+
+    # Computer Vision (CRITICAL FOR YOUR USE CASE)
+    "computer vision": 3,
+    "image recognition": 3,
+    "object detection": 3,
+    "face recognition": 3,
+    "cnn": 3,
+    "opencv": 3,
+
+    # Special CV techniques
+    "liveness detection": 2,
+    "anti spoofing": 2,
+
+    # NLP / Transformers
+    "nlp": 2,
+    "transformer": 2,
+    "transformers": 2,
+
+    # Data
     "pandas": 1,
     "numpy": 1,
-    "sql": 1,
+    "sql": 2,
+
+    # Backend / Tools
     "rest": 1,
+    "api": 1,
     "git": 1,
+    "docker": 2,
+
+    # Concepts
     "feature engineering": 2,
     "model evaluation": 2
 }
 
-# 🔧 Normalize text (for consistency)
+
+# 🔧 Normalize text
 def normalize_text(text):
     text = text.lower()
-
     for phrase, replacement in SYNONYMS.items():
-        if phrase in text:
-            text = text.replace(phrase, replacement)
-
+        text = text.replace(phrase, replacement)
     return text
 
-# 📌 TF-IDF similarity (old method)
-def calculate_similarity(resume_text, jd_text):
-    documents = [resume_text, jd_text]
 
-    vectorizer = TfidfVectorizer(stop_words='english')
-    tfidf_matrix = vectorizer.fit_transform(documents)
+# ==============================
+# 🚀 CHUNKED ENCODING
+# ==============================
 
-    similarity = cosine_similarity(tfidf_matrix[0:1], tfidf_matrix[1:2])
+def chunk_text(text, chunk_size=200, overlap=50):
+    words = text.split()
+    chunks = []
+    step = chunk_size - overlap
 
-    return round(float(similarity[0][0]) * 100, 2)
+    for i in range(0, len(words), step):
+        chunk = " ".join(words[i:i + chunk_size])
+        chunks.append(chunk)
+        if i + chunk_size >= len(words):
+            break
 
-# 🚀 Deep Learning similarity (NEW)
-def calculate_similarity_dl(resume_text, jd_text):
+    return chunks if chunks else [text]
 
+
+def encode_text_chunked(text):
+    chunks = chunk_text(text)
+    embeddings = model.encode(chunks)
+    return np.mean(embeddings, axis=0)
+
+
+# ======================================
+# 🚀 SECTION-AWARE DL SIMILARITY
+# ======================================
+
+def extract_sections(text):
+    text = text.lower()
+
+    sections = {
+        "skills": "",
+        "experience": "",
+        "projects": "",
+        "education": "",
+        "other": ""
+    }
+
+    current_section = "other"
+
+    for line in text.split("\n"):
+        line = line.strip()
+
+        if "skill" in line:
+            current_section = "skills"
+        elif "experience" in line:
+            current_section = "experience"
+        elif "project" in line:
+            current_section = "projects"
+        elif "education" in line:
+            current_section = "education"
+
+        sections[current_section] += " " + line
+
+    return sections
+
+
+def calculate_similarity_sectional(resume_text, jd_text):
     resume_text = normalize_text(resume_text)
     jd_text = normalize_text(jd_text)
 
-    resume_embedding = model.encode(resume_text)
-    jd_embedding = model.encode(jd_text)
+    resume_sections = extract_sections(resume_text)
+    jd_embedding = encode_text_chunked(jd_text)
 
-    similarity = cosine_similarity(
-        [resume_embedding], [jd_embedding]
-    )[0][0]
+    weights = {
+        "skills": 0.4,
+        "experience": 0.3,
+        "projects": 0.2,
+        "education": 0.1,
+        "other": 0.05
+    }
 
-    return round(float(similarity) * 100, 2)
+    total_score = 0
 
-# 🧠 Extract keywords (basic)
-def extract_keywords(text):
-    words = text.lower().split()
-    cleaned = [word.strip(",.()") for word in words]
-    return set(cleaned)
+    for section, content in resume_sections.items():
+        if content.strip():
+            section_embedding = encode_text_chunked(content)
 
-# 🎯 Extract skills using regex + weights
-def extract_skills(text):
+            sim = cosine_similarity(
+                [section_embedding], [jd_embedding]
+            )[0][0]
+
+            total_score += sim * weights.get(section, 0)
+
+    return round(total_score * 100, 2)
+
+
+# ======================================
+# 🚀 ADVANCED SKILL EXTRACTION
+# ======================================
+
+def extract_skills_advanced(text):
     text = normalize_text(text)
     found_skills = {}
 
     for skill, weight in SKILLS.items():
         pattern = r"\b" + re.escape(skill) + r"\b"
-        if re.search(pattern, text):
-            found_skills[skill] = weight
+        matches = re.findall(pattern, text)
+
+        if matches:
+            freq = len(matches)
+            score = weight * (1 + 0.2 * freq)
+            found_skills[skill] = score
 
     return found_skills
