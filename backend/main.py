@@ -7,7 +7,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://yourresumematchersite.netlify.app","*"],  # change later for production
+    allow_origins=["*"],  # change later for production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
