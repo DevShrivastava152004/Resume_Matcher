@@ -1,28 +1,31 @@
-# AI Resume – Job Description Matcher
+# 🚀 AI Resume – Job Description Matcher
 
-An AI-powered web application that evaluates how well a candidate’s resume aligns with a given job description using a hybrid AI scoring approach.
+An AI-powered web application that evaluates how well a candidate’s resume aligns with a job description using a **hybrid AI scoring system**.
 
-This system combines semantic similarity (TF-IDF) with weighted skill-based matching to generate an interpretable and robust compatibility score.
+This system combines **Deep Learning-based semantic similarity (Sentence Transformers)** with **weighted skill-based matching** to generate an accurate and interpretable compatibility score.
 
 ---
 
-## Live Demo
+## 🌐 Live Demo
 
 Frontend: https://yourresumematchersite.netlify.app/
 
 Backend API Docs:  
-https://resume-matcher-tqto.onrender.com/docs
+https://resume-matcher-lizq.onrender.com/docs
+
+---
 
 ## 🚀 Features
 
-- Resume PDF text extraction
-- TF-IDF based semantic similarity scoring
-- Weighted skill-based matching
-- Synonym normalization (e.g., CNN ↔ Convolutional Neural Networks)
-- Regex-based boundary-safe skill detection (prevents false positives like “rest” inside “interest”)
-- Hybrid scoring system
-- FastAPI backend
-- Clean frontend UI with real-time scoring display
+- 📄 Resume PDF text extraction
+- 🧠 Deep Learning semantic similarity using Sentence Transformers (MiniLM)
+- 🎯 Weighted skill-based matching system
+- 🔁 Synonym normalization (e.g., CNN ↔ Convolutional Neural Networks)
+- 🛡️ Regex-based boundary-safe skill detection (avoids false positives like “rest” in “interest”)
+- 📊 Hybrid scoring system (DL + Skills)
+- ⚡ FastAPI backend with real-time processing
+- 💻 Clean frontend UI with dynamic result display
+- 📌 Highlights missing and high-priority skills
 
 ---
 
@@ -30,17 +33,17 @@ https://resume-matcher-tqto.onrender.com/docs
 
 The system computes three metrics:
 
-### 1️⃣ TF-IDF Score  
-Measures textual similarity between resume and job description using vector space modeling.
+### 1️⃣ Deep Learning Score  
+Uses transformer-based embeddings to calculate semantic similarity between resume and job description.
 
 ### 2️⃣ Skill Score  
-Calculates weighted overlap of predefined domain-relevant skills.
+Calculates weighted overlap of domain-relevant skills extracted from both resume and job description.
 
 ### 3️⃣ Final Hybrid Score  
 
-Final Score = (0.6 × Skill Score) + (0.4 × TF-IDF Score)
+Final Score = (0.5 × Skill Score) + (0.5 × DL Score)
 
-This hybrid approach improves precision while maintaining semantic awareness.
+This hybrid approach ensures both **context understanding** and **skill precision**.
 
 ---
 
@@ -49,6 +52,7 @@ This hybrid approach improves precision while maintaining semantic awareness.
 ### Backend
 - Python
 - FastAPI
+- Sentence Transformers (BERT-based model)
 - Scikit-learn
 - PyPDF2
 
@@ -59,46 +63,72 @@ This hybrid approach improves precision while maintaining semantic awareness.
 
 ---
 
+## 🔍 Engineering Highlights
+
+- Implemented **transformer-based semantic similarity** for contextual understanding
+- Designed **weighted skill extraction system** for domain-aware scoring
+- Built **synonym normalization pipeline** to improve matching accuracy
+- Applied **regex-based word boundary detection** to eliminate false positives
+- Developed **hybrid scoring logic combining DL + rule-based methods**
+- Integrated full **frontend ↔ backend communication pipeline**
+- Solved real-world deployment challenges (CORS, Render + Netlify integration)
 
 ---
 
-## 🔍 Engineering Highlights
+## 📊 Example Output
 
-- Implemented synonym normalization to improve skill recall
-- Added regex-based word-boundary matching to eliminate substring false positives
-- Designed weighted skill dictionary for domain-aware scoring
-- Integrated end-to-end frontend and backend communication
-- Enabled CORS for seamless local development
+Final Score: 77%  
+DL Score: 71%  
+Skill Score: 83%  
+
+Matching Skills:  
+Python, Deep Learning, TensorFlow, OpenCV  
+
+Missing Skills:  
+Model Evaluation, Git  
+
+High Priority Missing:  
+Model Evaluation, Git  
+
+---
+
+## 📂 Project Structure
+
+resume-matcher/  
+│  
+├── backend/  
+│   ├── main.py  
+│   ├── utils.py  
+│   ├── requirements.txt  
+│  
+├── frontend/  
+│   ├── index.html  
+│   ├── style.css  
+│   ├── script.js  
+│  
+└── README.md  
 
 ---
 
 ## 🎯 Future Enhancements
 
-- Embedding-based semantic similarity (BERT / Sentence Transformers)
-- Skill categorization (Core vs Secondary)
-- Resume improvement suggestions
-- Cloud deployment
-- Recruiter dashboard
+- 🤖 AI-based resume improvement suggestions
+- 🧠 GPT-powered resume rewriting
+- 📄 Downloadable PDF analysis report
+- 📊 Recruiter dashboard with analytics
+- 🧩 Skill categorization (Core vs Secondary)
+- 🔍 ATS optimization insights
 
 ---
 
 ## 📌 Status
 
-MVP Complete – End-to-end functional AI resume matching web application.
+✅ MVP Complete – Fully functional AI resume analysis system  
+🚀 Deployed with frontend (Netlify) and backend (Render)  
+💡 Ready for real-world usage and further scaling
 
+---
 
-## 📂 Project Structure
+## 👨‍💻 Author
 
-resume-matcher/
-│
-├── backend/
-│ ├── main.py
-│ ├── utils.py
-│
-├── frontend/
-│ ├── index.html
-│ ├── style.css
-│ ├── script.js
-│
-└── README.md
-
+Dev Shrivastava
