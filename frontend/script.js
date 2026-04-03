@@ -18,7 +18,7 @@ async function submitForm() {
 
     try {
         // 🔥 SWITCH HERE if testing locally
-        const API_URL = "https://resume-matcher-lizq.onrender.com/";
+        const API_URL = "https://resume-matcher-lizq.onrender.com/match";
         // const API_URL = "http://127.0.0.1:8000/match";
 
         const response = await fetch(API_URL, {
