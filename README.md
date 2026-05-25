@@ -1,4 +1,4 @@
-# 🚀 AI Resume – Job Description Matcher
+# 🚀 IntelliMatch — AI-Powered Resume–JD Compatibility Engine  
 
 An AI-powered web application that evaluates how well a candidate’s resume aligns with a job description using a **hybrid AI scoring system**.
 
